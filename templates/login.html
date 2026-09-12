@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <title>Document</title>
+</head>
+<body class="m-0">
+    <div class="flex justify-center items-center w-[100%] h-[100vh]">
+        
+        <form method="post" class="flex flex-col items-center w-fit" action="{% url 'login' %}">
+            {% csrf_token %}
+            <p class="font-semibold text-xl mb-[10px]">Вход в профиль</p>
+            <div>
+                <div class="flex flex-col w-fit">
+                    <label for="{{ form.username.id_for_label }}" class="w-fit">Имя пользователя:</label>
+                    <input type="text" name="username" value="{{ request.POST.username }}" class="w-[250px] border border-2 border-[#828282] rounded-lg outline-none p-2"/>
+                    {{ form.username.errors }}
+                </div>
+                <div class="flex flex-col">
+                    <label for="{{ form.password1.id_for_label }}">Пароль: </label>
+                    <input type="password" name="password" value="{{ request.POST.password }}" class="w-[250px] border border-2 border-[#828282] rounded-lg outline-none p-2"/>
+                    {{form.password1.errors }}
+                </div>
+                
+            </div>
+            {{ form.non_field_errors }}
+            <button type="submit" class="mt-5 text-white bg-black p-3 pl-5 pr-5 rounded rounded-lg w-fit">Войти</button>
+            <p class="text-xs text-[#828282] mt-3">Еще нет аккаунта? <a class='hover:text-[#415782] hover:underline' href="http://127.0.0.1:8000/register">Регистрация</a></p>
+            
+        </form>
+    </div>
+    <script>
+        const navEntries = performance.getEntriesByType("navigation");
+        
+        if (navEntries.length > 0 && navEntries[0].type === "reload") {
+
+            window.location.href = window.location.pathname;
+        }
+    </script>
+</body>
+</html>

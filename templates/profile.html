@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <title>Document</title>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        <div class="flex justify-between p-4">
+            <div>
+                <p class="text-4xl font-bold">{{ user.username }}</p>
+                <p class="text-m text-[#b3b3b3]">{{ user.email }}</p>
+            </div>
+            <div>
+                <a type="button" class="bg-black text-white p-2 pl-3 pr-3 rounded rounded-lg h-fit mt-4" href="http://127.0.0.1:8000/">На главную</a>
+
+                <button type="submit" class="bg-black text-white p-2 pl-3 pr-3 rounded rounded-lg h-fit mt-4">Выйти</button>
+            </div>
+
+        </div>
+        <hr/>
+        
+    </form>
+    <div>
+        {% for order in orders %}
+            <p>Заказ от {{order.created_at|date:"d-m-Y H:i"}}</p>
+            {% for item in order.items.all %}
+                {% include 'includes/order_item.html' with product=item.product quantity=item.quantity%}
+            {%endfor%}
+        {% endfor %}
+    </div>
+    <script>
+        document.querySelectorAll('.box').forEach(box => {
+            box.addEventListener('click', function() {
+            curUrl = document.location.href;
+            curUrl += this.getAttribute('data-slug');
+            window.location.href = curUrl;
+        })
+        })
+    </script>
+</body>
+</html>

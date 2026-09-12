@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+        <title>Document</title>
+    </head>
+    <body>
+        <header>
+            {% include 'includes/base.html' %}
+        </header>
+        {% if items %}
+            <div class="flex flex-row justify-between pr-53 pl-27">
+                <p>Товар:</p>
+                <p>Количество:</p>
+            </div>
+            <hr/>
+            {% for item in items %}
+
+                {% include 'includes/product.html' with product=item.product quantity=item.quantity%}
+            {% endfor %}
+                <hr>
+                <div class="flex flex-row justify-center">
+                    
+                        <div class="flex flex-col w-fit items-center">
+                            <div class="flex flex-row gap-5 mt-4 items-center"><p>Итого: </p><p class="text-2xl font-semibold">{{ total_price|stringformat:"i"|slice:":-3" }} {{ total_price|stringformat:"i"|slice:"-3:" }}₽</p></div>
+                            {% if user.is_authenticated %}
+                                <a class="bg-black p-[6px] pr-[10px] pl-[10px] rounded-lg text-white mt-6 w-[100%] text-center" href="/cat/buy/">Оплатить</a>
+                                <button id = 'clear' class="bg-black p-[6px] pr-[10px] pl-[10px] rounded-lg text-white mt-2">Очистить корзину</button>
+                                {% csrf_token %}
+                            {% else %}
+                                <p class="text-m text-[#828282]">Войдите или создайте аккаунт, что бы оформить заказ</p>
+                            {% endif %}
+                            <script>
+                                let clear = document.querySelector('#clear')
+                                clear.addEventListener('click', function()  {
+                                    fetch('/cat/clear/', {
+                                        method: 'DELETE',
+                                        headers: {'Content-Type': 'application/json',
+                                            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                                        }}).then(response => response.json())
+                                    .then(data => {
+                                        if(data.status === 'ok'){
+                                            window.location.reload()
+                                        }
+                                    }).catch(error => console.log(error))});
+
+    
+                                document.querySelectorAll('.box').forEach(box => {
+                                    box.addEventListener('click', function() {
+                                    curUrl = document.location.href;
+                                    curUrl += this.getAttribute('data-slug');
+                                    window.location.href = curUrl;
+                                })
+                                });
+                                document.querySelectorAll('.btn2').forEach(btn => {
+                                btn.addEventListener('click', function() {
+                                    id = this.getAttribute('data-id');
+                                    let csrf = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                                    fetch('/cat/delete/', {
+                                        method: 'POST',
+                                        headers: {'Content-Type': 'application/json',
+                                            'X-CSRFToken': csrf},
+                                        body: JSON.stringify({'product_id': id})
+                                    }).then(response => response.json())
+                                    .then(data => {
+                                    if(data.status === 'ok') {
+                                        window.location.reload()
+                                    }}).catch(error => console.log(error))
+
+                                })})
+                            </script>
+                        </div>
+                    
+                </div>
+        {% else %}
+        <div class="flex justify-center items-center">
+                <p>Корзина пуста.</p>
+            </div>
+        {% endif %}
+        
+    </body>
+</html>

@@ -1,0 +1,13 @@
+<div class="box hover:cursor-pointer scale-95 hover:scale-100 hover:bg-[#e3e3e3] transition duration-600 flex flex-row items-center gap-4 mb-3" data-slug="{{product.title|slugify}}">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.title }}" class="w-[200px] h-[150px]">
+            {% else %}
+                <img src="../media/base-img.png" alt="Нет фото">
+            {% endif %}
+            <div class="w-[55%]">
+                <p class="text-xl">{{ product.title }}</p>
+                <p class="text-[#828282] text-xs line-clamp-3 ">{{ product.description }}</p>
+            </div>
+            <p class="text-3xl font-medium ml-3">{{ product.price|stringformat:"i"|slice:":-3" }} {{ product.price|stringformat:"i"|slice:"-3:" }}₽</p>
+            <p class="text-3xl font-normal ml-35">{{quantity}}</p>
+        </div>

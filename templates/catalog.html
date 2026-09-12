@@ -1,0 +1,20 @@
+{% extends 'includes/menu.html' %}
+
+{% block content %}
+    {% for product in products %}
+        {% include 'includes/product.html' with product=product %}
+    {% empty %}
+        <p>Товаров нет.</p>
+    {% endfor %}
+    <script>
+    
+        document.querySelectorAll('.box').forEach(box => {
+            box.addEventListener('click', function() {
+            curUrl = document.location.href;
+            curUrl += this.getAttribute('data-slug');
+            window.location.href = curUrl;
+        })
+        })
+    
+    </script>
+{% endblock %}
