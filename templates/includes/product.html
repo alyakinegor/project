@@ -1,5 +1,5 @@
     <div class="cont scale-95 flex flex-row items-center w-full">
-        <div class="box hover:cursor-pointer scale-95 hover:scale-100 hover:bg-[#e3e3e3] transition duration-600 flex flex-row items-center gap-4 mb-3" data-slug="{{product.title|slugify}}">
+        <div class="box hover:cursor-pointer scale-95 hover:scale-100 hover:bg-[#e3e3e3] transition duration-600 flex flex-row items-center gap-4 mb-3" data-slug="{{product.title|slugify}}" data-cat="{{product.category.slug}}">
             {% if product.image %}
                 <img src="{{ product.image.url }}" alt="{{ product.title }}" class="w-[200px] h-[150px]">
             {% else %}

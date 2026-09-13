@@ -1,6 +1,13 @@
 from django.db import models
 from django.conf import settings
+
+class Class(models.Model):
+    title = models.CharField(max_length=15, verbose_name='Название группы')
+
+    
 class Category(models.Model):
+    cat_class = models.ForeignKey(Class, on_delete=models.CASCADE, verbose_name='Группа категории', related_name='categories')
+
     cat_name = models.CharField(max_length=20, verbose_name='Название категории')
     slug = models.CharField(max_length=15, unique=True, verbose_name='URl-метка')
 

@@ -1,0 +1,12 @@
+{% for class in classes %}
+    <div class="group relative">
+        <a class=" w-fit">{{class.title}}</a>
+        <div class="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-500">
+            <div class="flex flex-col ml-5">
+                {% for cat in class.categories.all %}
+                   <a class="hover:text-[#828282] hover:underline w-fit text-sm" href="http://127.0.0.1:8000/cat/{{cat.slug}}">{{cat.cat_name}}</a>
+                {% endfor %}
+            </div>
+        </div>
+     </div>
+{% endfor %}

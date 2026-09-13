@@ -36,9 +36,8 @@
     <script>
         document.querySelectorAll('.box').forEach(box => {
             box.addEventListener('click', function() {
-            curUrl = document.location.href;
-            curUrl += this.getAttribute('data-slug');
-            window.location.href = curUrl;
+                curUrl = 'http://127.0.0.1:8000/cat/' + this.getAttribute('data-cat') + '/' + this.getAttribute('data-slug');
+                window.location.href = curUrl;
         })
         })
     </script>

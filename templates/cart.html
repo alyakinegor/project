@@ -30,28 +30,27 @@
                                 <a class="bg-black p-[6px] pr-[10px] pl-[10px] rounded-lg text-white mt-6 w-[100%] text-center" href="/buy/">Оплатить</a>
                                 <button id = 'clear' class="bg-black p-[6px] pr-[10px] pl-[10px] rounded-lg text-white mt-2">Очистить корзину</button>
                                 {% csrf_token %}
+                                <script>
+                                    let clear = document.querySelector('#clear')
+                                    clear.addEventListener('click', function()  {
+                                        fetch('clear/', {
+                                            method: 'DELETE',
+                                            headers: {'Content-Type': 'application/json',
+                                                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                                            }}).then(response => response.json())
+                                        .then(data => {
+                                            if(data.status === 'ok'){
+                                                window.location.reload()
+                                            }
+                                        }).catch(error => console.log(error))});
+                                </script>
                             {% else %}
                                 <p class="text-m text-[#828282]">Войдите или создайте аккаунт, что бы оформить заказ</p>
                             {% endif %}
                             <script>
-                                let clear = document.querySelector('#clear')
-                                clear.addEventListener('click', function()  {
-                                    fetch('clear/', {
-                                        method: 'DELETE',
-                                        headers: {'Content-Type': 'application/json',
-                                            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-                                        }}).then(response => response.json())
-                                    .then(data => {
-                                        if(data.status === 'ok'){
-                                            window.location.reload()
-                                        }
-                                    }).catch(error => console.log(error))});
-
-    
                                 document.querySelectorAll('.box').forEach(box => {
                                     box.addEventListener('click', function() {
-                                    curUrl = document.location.href;
-                                    curUrl += this.getAttribute('data-slug');
+                                    curUrl = 'http://127.0.0.1:8000/cat/' + this.getAttribute('data-cat') + '/' + this.getAttribute('data-slug');
                                     window.location.href = curUrl;
                                 })
                                 });

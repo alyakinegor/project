@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from .models import Category, Product, Cart, CartItem, Order, OrderItem
+from .models import Category, Product, Cart, CartItem, Order, OrderItem, Class
 from django.db.models.functions import Lower, Replace
 from django.db.models import Value, Sum
 from django.db import transaction
@@ -19,9 +19,9 @@ class CategoryView(View):
 
 class ProductView(View):
     def get(self,  request,slug, product):
-        item = Product.objects.annotate(formatted_data=Lower(Replace(Replace(Replace('title', Value(' '), Value('-')), Value('"'), Value('')), Value('.'), Value('')))).filter(formatted_data=product).first()
-        print(item)
-        return render(request, 'product_detail.html', {'product': item})
+        item = Product.objects.annotate(formatted_data=Lower(Replace(Replace(Replace(Replace('title', Value(' '), Value('-')), Value('"'), Value('')), Value('.'), Value('')), Value('/'), Value('')))).filter(formatted_data=product).first()
+        classes = Class.objects.all()
+        return render(request, 'product_detail.html', {'product': item, 'classes': classes})
 
 def get_or_create_cart(request):
     if request.user.is_authenticated:
