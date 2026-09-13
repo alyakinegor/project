@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 class Category(models.Model):
     cat_name = models.CharField(max_length=20, verbose_name='Название категории')
-    slug = models.CharField(max_length=10, unique=True, verbose_name='URl-метка')
+    slug = models.CharField(max_length=15, unique=True, verbose_name='URl-метка')
 
     def __str__(self):
         return self.cat_name

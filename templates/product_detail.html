@@ -22,7 +22,7 @@
                 const id = this.getAttribute('data-id');
                 const csrf = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-                fetch('/cat/add/', {
+                fetch('/add/', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json',
                             'X-CSRFToken': csrf},

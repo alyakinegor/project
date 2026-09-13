@@ -27,7 +27,7 @@
                         <div class="flex flex-col w-fit items-center">
                             <div class="flex flex-row gap-5 mt-4 items-center"><p>Итого: </p><p class="text-2xl font-semibold">{{ total_price|stringformat:"i"|slice:":-3" }} {{ total_price|stringformat:"i"|slice:"-3:" }}₽</p></div>
                             {% if user.is_authenticated %}
-                                <a class="bg-black p-[6px] pr-[10px] pl-[10px] rounded-lg text-white mt-6 w-[100%] text-center" href="/cat/buy/">Оплатить</a>
+                                <a class="bg-black p-[6px] pr-[10px] pl-[10px] rounded-lg text-white mt-6 w-[100%] text-center" href="/buy/">Оплатить</a>
                                 <button id = 'clear' class="bg-black p-[6px] pr-[10px] pl-[10px] rounded-lg text-white mt-2">Очистить корзину</button>
                                 {% csrf_token %}
                             {% else %}
@@ -36,7 +36,7 @@
                             <script>
                                 let clear = document.querySelector('#clear')
                                 clear.addEventListener('click', function()  {
-                                    fetch('/cat/clear/', {
+                                    fetch('clear/', {
                                         method: 'DELETE',
                                         headers: {'Content-Type': 'application/json',
                                             'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
@@ -60,7 +60,7 @@
                                     id = this.getAttribute('data-id');
                                     let csrf = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-                                    fetch('/cat/delete/', {
+                                    fetch('/delete/', {
                                         method: 'POST',
                                         headers: {'Content-Type': 'application/json',
                                             'X-CSRFToken': csrf},

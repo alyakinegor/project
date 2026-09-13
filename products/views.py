@@ -19,7 +19,8 @@ class CategoryView(View):
 
 class ProductView(View):
     def get(self,  request,slug, product):
-        item = Product.objects.annotate(formatted_data=Lower(Replace('title', Value(' '), Value('-')))).filter(formatted_data=product).first()
+        item = Product.objects.annotate(formatted_data=Lower(Replace(Replace(Replace('title', Value(' '), Value('-')), Value('"'), Value('')), Value('.'), Value('')))).filter(formatted_data=product).first()
+        print(item)
         return render(request, 'product_detail.html', {'product': item})
 
 def get_or_create_cart(request):
@@ -78,12 +79,6 @@ class CartItemDeleteView(View):
 class BuyView(View):
     def get(self, request):
         cart = get_or_create_cart(request)
-        # items = CartItem.objects.filter(cart=cart)
-        # sum_q = items.aggregate(total=Sum('quantity'))['total'] or 0
-        # titles = items.values_list('product__title', flat=True)
-        # products = ', '.join(titles)
-        # total_price = cart.get_total_price()
-        # return HttpResponse(f'{sum_q}, {products}, {total_price}')
         cart_items = cart.items.select_related('product').all()
 
         with transaction.atomic():
@@ -100,7 +95,7 @@ class BuyView(View):
 
             CartItem.objects.filter(cart=cart).delete()
 
-        return redirect('http://127.0.0.1:8000/cat/profile')
+        return redirect('http://127.0.0.1:8000/profile')
 
 class ProfileView(View):
     def get(self, request):
@@ -111,3 +106,10 @@ class ProfileView(View):
 
         return redirect('http://127.0.0.1:8000/')
 
+class MainView(View):
+    def get(self, request):
+        t1 = Product.objects.get(id=1)
+        t2 = Product.objects.get(id=4)
+        t3 = Product.objects.get(id=5)
+
+        return render(request, 'main.html', {'specials': [t1, t2, t3]})

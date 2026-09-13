@@ -1,3 +1,7 @@
 {% block content %}
-<div class="w-[300px] h-[300px] bg-[#e8e8e8]"></div>
+<div class="box w-[200px] h-[200px] bg-[#e8e8e8] flex flex-col items-center p-4 scale-95 hover:scale-100 transition duration-600" data-slug="{{product.title|slugify}}" data-cat="{{product.category.cat_name|slugify}}">
+    <img src="{{ product.image.url }}" class="w-[130px] h-[100px]">
+    <p class="h-[50px] text-center">{{product.title}}</p>
+    <p class="font-semibold">{{ product.price|stringformat:"i"|slice:":-3" }} {{ product.price|stringformat:"i"|slice:"-3:" }}₽</p>
+</div>
 {% endblock %}

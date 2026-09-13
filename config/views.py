@@ -5,6 +5,8 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.decorators.cache import never_cache
 from django.utils.decorators import method_decorator
+
+
 class MainView(View):
     def get(self, request):
         return render(request, 'main.html')

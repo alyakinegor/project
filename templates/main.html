@@ -1,8 +1,35 @@
 {% extends 'includes/menu.html' %}
 {% block content %}
-    <div>
-        <div>
-            
+    <div class="flex flex-col items-center justify-center mt-3">
+        <div class="flex flex-col items-center">
+            <img src="../media/Frame2.png">
+            <p class="w-[700px]"> — это твой ультимативный онлайн-шоп BMX-культуры, где собрано абсолютно все для стрита, парка, дёрта и кастомизации твоего байка. Мы объединили проверенное железо от мировых брендов, качественную экипировку и редкий стафф в одном месте, чтобы ты мог собрать велосипед своей мечты и прогрессировать без границ.</p>
+        </div>
+        <p class="font-semibold text-l mt-7">Почему выбирают нас</p>
+        <p>Топовые бренды: Только оригинальные запчасти от лидеров индустрии.<br>Полный ассортимент: От мелких расходников до готовых профессиональных комплитов.<br>Быстрая доставка: Твой заказ приедет быстрее, чем ты выучишь новый трюк.</p>
+        <div class="flex flex-col items-center">
+            <p class="mb-5 text-xl mt-4">Лучшие предложения: </p>
+            <div class="flex flex-row gap-6">
+                {% for el in specials %}
+                    {% include 'includes/square_card.html' with product=el %}
+                {% endfor %}
+            </div>
         </div>
     </div>
+    
+    
+    
+    
+    
+    <script>
+    
+        document.querySelectorAll('.box').forEach(box => {
+            box.addEventListener('click', function() {
+            curUrl = document.location.href;
+            curUrl += 'cat/' + this.getAttribute('data-cat')+ '/' + this.getAttribute('data-slug');
+            window.location.href = curUrl;
+        })
+        })
+    
+    </script>
 {% endblock %}
