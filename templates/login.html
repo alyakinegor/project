@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-    <title>Document</title>
+    <title>Вход</title>
 </head>
 <body class="m-0">
     <div class="flex justify-center items-center w-[100%] h-[100vh]">
@@ -28,7 +28,7 @@
             </div>
             {{ form.non_field_errors }}
             <button type="submit" class="mt-5 text-white bg-black p-3 pl-5 pr-5 rounded rounded-lg w-fit">Войти</button>
-            <p class="text-xs text-[#828282] mt-3">Еще нет аккаунта? <a class='hover:text-[#415782] hover:underline' href="http://127.0.0.1:8000/register">Регистрация</a></p>
+            <p class="text-xs text-[#828282] mt-3">Еще нет аккаунта? <a class='hover:text-[#415782] hover:underline' href="{% url 'register' %}">Регистрация</a></p>
             
         </form>
     </div>

@@ -7,7 +7,11 @@
             <span class="flex flex-row gap-15 items-center mt-10">
                 <p class="text-4xl">{{ product.price|stringformat:"i"|slice:":-3" }} {{ product.price|stringformat:"i"|slice:"-3:" }}₽</p>
                 {% csrf_token %}
-                <button class="bg-black p-[6px] pr-[10px] pl-[10px] pb-[8px] rounded-xl text-white" id="btn" data-id="{{ product.id }}">В корзину</button>
+                {% if product.quantity_left > 0 %}
+                    <button class="bg-black p-[6px] pr-[10px] pl-[10px] pb-[8px] rounded-xl text-white" id="btn" data-id="{{ product.id }}">В корзину</button>
+                {% else %}
+                    <p class="text-[#e66a5c]">Нет в наличии</p>
+                {% endif %}
             </span>
         </div>
         <div>
@@ -22,7 +26,7 @@
                 const id = this.getAttribute('data-id');
                 const csrf = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-                fetch('/add/', {
+                fetch('{% url "add" %}', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json',
                             'X-CSRFToken': csrf},

@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-        <title>Document</title>
+        <title>Корзина</title>
     </head>
     <body>
         <header>
@@ -27,13 +27,18 @@
                         <div class="flex flex-col w-fit items-center">
                             <div class="flex flex-row gap-5 mt-4 items-center"><p>Итого: </p><p class="text-2xl font-semibold">{{ total_price|stringformat:"i"|slice:":-3" }} {{ total_price|stringformat:"i"|slice:"-3:" }}₽</p></div>
                             {% if user.is_authenticated %}
-                                <a class="bg-black p-[6px] pr-[10px] pl-[10px] rounded-lg text-white mt-6 w-[100%] text-center" href="/buy/">Оплатить</a>
-                                <button id = 'clear' class="bg-black p-[6px] pr-[10px] pl-[10px] rounded-lg text-white mt-2">Очистить корзину</button>
+                            <form class="flex flex-col items-center gap-2 mt-3" method="post" action="{% url 'buy' %}">
                                 {% csrf_token %}
+                                <input class="w-[280px] border border-2 border-[#828282] rounded-lg outline-none p-2" placeholder="Введите адрес..." name="address"/>
+                                {{ error }}
+                                <button type='submit' class="bg-black p-[6px] pr-[10px] pl-[10px] rounded-lg text-white w-fit text-center">Оплатить</button>
+                                <button id = 'clear' class="bg-black p-[6px] pr-[10px] pl-[10px] rounded-lg text-white">Очистить корзину</button>
+                            </form>
+                                
                                 <script>
                                     let clear = document.querySelector('#clear')
                                     clear.addEventListener('click', function()  {
-                                        fetch('clear/', {
+                                        fetch('{% url "clear_cart" %}', {
                                             method: 'DELETE',
                                             headers: {'Content-Type': 'application/json',
                                                 'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
@@ -50,7 +55,7 @@
                             <script>
                                 document.querySelectorAll('.box').forEach(box => {
                                     box.addEventListener('click', function() {
-                                    curUrl = 'http://127.0.0.1:8000/cat/' + this.getAttribute('data-cat') + '/' + this.getAttribute('data-slug');
+                                    curUrl = "/cat/" + this.getAttribute('data-cat') + '/' + this.getAttribute('data-slug');
                                     window.location.href = curUrl;
                                 })
                                 });
@@ -59,12 +64,17 @@
                                     id = this.getAttribute('data-id');
                                     let csrf = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-                                    fetch('/delete/', {
+                                    fetch('{% url "delete" %}', {
                                         method: 'POST',
                                         headers: {'Content-Type': 'application/json',
                                             'X-CSRFToken': csrf},
                                         body: JSON.stringify({'product_id': id})
-                                    }).then(response => response.json())
+                                    }).then(response => {
+                                        if (!response.ok) {
+                                            return response.json().then(err => { throw new Error(err.error || 'Ошибка при удалении товара'); });
+                                        }
+                                        return response.json();
+                                    })
                                     .then(data => {
                                     if(data.status === 'ok') {
                                         window.location.reload()
