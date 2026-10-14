@@ -15,7 +15,7 @@ class RegisterView(View):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('http://127.0.0.1:8000/')
+            return redirect('/')
         return render(request, 'register.html', {'form': form})
 
 @method_decorator(never_cache, name='dispatch')
@@ -30,6 +30,6 @@ class LoginView(View):
             login(request, user)
 
         
-            return redirect('http://127.0.0.1:8000/')
+            return redirect('/')
         return render(request, 'login.html', {'form': form})
 
